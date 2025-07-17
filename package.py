@@ -5,7 +5,6 @@ class Package:
     def __init__(self, package_id: int,
                  delivery_address : str,
                  delivery_city : str,
-                 state : str,
                  delivery_zip: int,
                  delivery_deadline: str,
                  package_weight : int,
@@ -17,7 +16,6 @@ class Package:
         self.package_id = package_id
         self.delivery_address = delivery_address
         self.delivery_city = delivery_city
-        self.state = state
         self.deliver_deadline = delivery_deadline
         self.delivery_zip = delivery_zip
         self.package_weight = package_weight
@@ -38,7 +36,7 @@ class Package:
                 "delivery_status: {},"
                 "loading_time: {},"
                 "delivery_time: {}".format(self.package_id, self.delivery_address, self.delivery_city, self.delivery_zip,
-                                           self.deliver_deadline, self.package_weight, self.notes, self.delivery_status,
+                                           self.delivery_deadline, self.package_weight, self.notes, self.delivery_status,
                                            self.loading_time, self.delivery_time))
 
 
@@ -55,7 +53,3 @@ class Package:
                 "delivery_time: {}".format(self.package_id, self.delivery_address, self.delivery_city, self.delivery_zip,
                                            self.deliver_deadline, self.package_weight, self.notes, self.delivery_status,
                                            self.loading_time, self.delivery_time))
-
-
-
-
