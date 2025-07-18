@@ -16,7 +16,7 @@ class Package:
         self.package_id = package_id
         self.delivery_address = delivery_address
         self.delivery_city = delivery_city
-        self.deliver_deadline = delivery_deadline
+        self.delivery_deadline = delivery_deadline
         self.delivery_zip = delivery_zip
         self.package_weight = package_weight
         self.notes = notes
@@ -51,5 +51,5 @@ class Package:
                 "delivery_status: {},"
                 "loading_time: {},"
                 "delivery_time: {}".format(self.package_id, self.delivery_address, self.delivery_city, self.delivery_zip,
-                                           self.deliver_deadline, self.package_weight, self.notes, self.delivery_status,
+                                           self.delivery_deadline, self.package_weight, self.notes, self.delivery_status,
                                            self.loading_time, self.delivery_time))
