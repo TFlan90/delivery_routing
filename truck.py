@@ -12,12 +12,21 @@ class Truck:
         self.time = datetime.time(8,0,0)
 
     def add_package(self, package):
+        """checks truck for unused capacity, adds package, and updates truck's unused capacity"""
         if self.unused_capacity > 0:
             self.contents.append(package)
             self.unused_capacity -= 1
+
     def list_contents(self):
+        """for testing, prints all packages on a truck"""
         for package in self.contents:
             print(package)
+
+    def deliver_package(self,time,distance):
+        """update current time and distance_traveled"""
+        self.time += time
+        self.distance_traveled += distance
+
 
 
     def __repr__(self):

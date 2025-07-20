@@ -24,6 +24,10 @@ class Package:
         self.loading_time = loading_time
         self.delivery_time = delivery_time
 
+    def log_delivery(self,time):
+        self.delivery_status = "delivered"
+        self.delivery_time = time
+
 
     def __repr__(self):
         return ("package_id: {},"
