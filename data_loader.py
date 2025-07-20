@@ -2,6 +2,7 @@ from hash_table import HashTable
 from package import Package
 import csv
 from truck import Truck
+import datetime
 def build_delivery_manifest(filename):
     """
     build manifest(hash_table) from csv file of packages
@@ -44,7 +45,7 @@ def load_truck(manifest, truck1 : Truck, truck2 : Truck, truck3 : Truck):
 
     Algorithm logic: sort packages into candidate lists using notes for trucks 2 and 3
     everything else goes into candidate list 1
-
+    when a package is loaded on a truck, it's considered "in transit"
     everything in truck2_candidates -> truck2
     everything in truck3_candidates -> truck3
     truck1_candidates -> 16 packages(truck obj capacity) ->  truck1
@@ -60,16 +61,25 @@ def load_truck(manifest, truck1 : Truck, truck2 : Truck, truck3 : Truck):
         package = manifest.lookup(i)
         if "Can only be on truck 2" in package.notes or "Must be delivered with" in package.notes:
             truck2_candidates.append(package)
-        elif "Delayed on flight" in package.notes or "Wrong address" in package.notes:
+        elif "will arrive" in package.notes or "Wrong address" in package.notes:
             truck3_candidates.append(package)
         else:
             truck1_candidates.append(package)
 
     for i in range(len(truck2_candidates)):
+        truck2_candidates[i].loading_time = truck2.time
         truck2.add_package(truck2_candidates[i])
     for i in range(len(truck3_candidates)):
-        truck3.add_package(truck3_candidates[i])
+        if "will arrive" not in truck3_candidates[i].notes:
+            truck3_candidates[i].loading_time = truck3.time
+            truck3.add_package(truck3_candidates[i])
+        else:
+            #used to extract delayed packages loading time
+            #extracted delivery time will be cast to a datetime.time obj and passed to the package
+            truck3_candidates[i].loading_time = datetime.time(int(truck3_candidates[i].notes[12:14]),int(truck3_candidates[i].notes[15:18]),00)
+            truck3.add_package(truck3_candidates[i])
     for i in range(len(truck1_candidates)):
+        truck1_candidates[i].loading_time = truck1.time
         if truck1.unused_capacity > 0:
             truck1.add_package(truck1_candidates[i])
         elif truck2.unused_capacity > 0:
