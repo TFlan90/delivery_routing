@@ -1,40 +1,7 @@
-from hash_table import HashTable
-from package import Package
-import csv
-
-def build_delivery_manifest(filename):
-    """
-    build manifest(hash_table) from csv file of packages
-    input: csv file of packages
-    output: manifest(hash_table) of packages that uses package ID as key
-    """
-    manifest = HashTable()
-    # https://stackoverflow.com/questions/52400408/import-csv-file-into-python
-    with open(filename, newline='', mode='r') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
-        for row in reader:
-            package = Package(int(row[0]), row[1], row[2], int(row[4]), row[5], int(row[6]), row[7], "At the hub",
-                              "TBD", "TBD")
-            manifest.insert(package)
-    return manifest
+from data_loader import *
+from truck import Truck
 
 
-def load_distance_data(filename):
-    """"
-    parses an adjacency matrix of address distances from a csv file
-    input: csv file of distances
-    output: 2d list of address distances, dictionary containing address:index pairs that are used as access points for the 2d list
-    """
-    adjacency_matrix = []
-    address_key = {}
-
-    with open(filename, newline='', mode='r') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
-        for i,row in enumerate(reader):
-            address = row.pop(0)
-            address_key[address] = i
-            adjacency_matrix.append(row)
-    return adjacency_matrix,address_key
 
 def main():
 
@@ -49,10 +16,28 @@ def main():
     print("== manifest ==")
     print(manifest)
     print("== manifest lookup ==")
-    print(manifest.lookup(23))
+    package = (manifest.lookup(23))
+    print(package)
     print(manifest.lookup(6))
     print(manifest.lookup(9))
 
 
+    t1 = Truck(1)
+    t2 = Truck(2)
+    t3 = Truck(3)
+
+    load_truck(manifest, t1, t2, t3)
+    print("======trucks after loading=====")
+    print(t1)
+    print(t2)
+    print(t3)
+    print("======trucks 1 contents=====")
+    print(t1.list_contents())
+    print(t2)
+    print("======trucks 2 contents=====")
+    print(t2.list_contents())
+    print(t3)
+    print("======trucks 3 contents=====")
+    print(t3.list_contents())
 if __name__ == "__main__":
     main()
