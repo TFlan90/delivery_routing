@@ -76,8 +76,10 @@ def load_truck(manifest, truck1 : Truck, truck2 : Truck, truck3 : Truck):
         else:
             #used to extract delayed packages loading time
             #extracted delivery time will be cast to a datetime.time obj and passed to the package
+            #if a package can't be loaded until a certain time, update truck.time to whatever is larger, the trucks current time, or the package loading time
             truck3_candidates[i].loading_time = datetime.time(int(truck3_candidates[i].notes[12:14]),int(truck3_candidates[i].notes[15:18]),00)
             truck3.add_package(truck3_candidates[i])
+            truck3.time = max(truck3.time, truck3_candidates[i].loading_time)
     for i in range(len(truck1_candidates)):
         truck1_candidates[i].loading_time = truck1.time
         if truck1.unused_capacity > 0:
