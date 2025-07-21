@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta, time
 
 class Truck:
 
@@ -6,10 +6,10 @@ class Truck:
         self.truck_number = truck_number
         self.unused_capacity = 16
         self.contents = []
-        self.current_location = 0
+        self.current_location = "HUB"
         self.distance_traveled = 0
         self.min_distance_to_nearest_location = 0
-        self.time = datetime.time(8,0,0)
+        self.time = time(hour=8)
 
     def add_package(self, package):
         """checks truck for unused capacity, adds package, and updates truck's unused capacity"""
@@ -22,10 +22,13 @@ class Truck:
         for package in self.contents:
             print(package)
 
-    def deliver_package(self,time,distance):
-        """update current time and distance_traveled"""
-        self.time += time
+    def deliver_package(self,time_delivered,distance,new_location):
+        """update current time, distance_traveled, unused capacity(returns how much capacity remains in truck), and current location"""
+        delta = timedelta(minutes=time_delivered)
+        self.time = (datetime.combine(datetime.today(),self.time) + delta).time()
         self.distance_traveled += distance
+        self.unused_capacity += 1
+        self.current_location = new_location
 
 
 
