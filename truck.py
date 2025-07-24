@@ -1,5 +1,8 @@
 from datetime import datetime, timedelta, time
 
+import package
+
+
 class Truck:
 
     def __init__(self, truck_number):
@@ -22,8 +25,21 @@ class Truck:
         for package in self.contents:
             print(package)
 
-    def deliver_package(self,time_delivered,distance,new_location):
-        """update current time, distance_traveled, unused capacity(returns how much capacity remains in truck), and current location"""
+    def return_to_hub(self, distance_to_hub, time_spent, manifest):
+        self.current_location = "HUB"
+        self.distance_traveled += distance_to_hub
+        delta = timedelta(minutes=time_spent)
+        self.time = (datetime.combine(datetime.today(), self.time) + delta).time()
+        self.contents.append(manifest.lookup(6))
+
+
+    def log_delivery(self,time_delivered,distance,new_location):
+        """update current time, distance_traveled, unused capacity(returns how much capacity remains in truck), and current location
+        https://docs.python.org/3/library/datetime.html#time-objects
+        use datetime.combine to convert self.time to a datetime obj
+        add delta
+        convert back to time obj
+        """
         delta = timedelta(minutes=time_delivered)
         self.time = (datetime.combine(datetime.today(),self.time) + delta).time()
         self.distance_traveled += distance
