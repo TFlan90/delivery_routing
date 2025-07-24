@@ -1,5 +1,4 @@
-from hash_table import HashTable
-import csv
+
 
 class Package:
     def __init__(self, package_id: int,
@@ -24,7 +23,7 @@ class Package:
         self.loading_time = loading_time
         self.delivery_time = delivery_time
 
-    def log_delivery(self,time):
+    def deliver_package(self,time):
         self.delivery_status = "delivered"
         self.delivery_time = time
 
