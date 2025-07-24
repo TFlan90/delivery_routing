@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta, time
 
-import package
 
 
 class Truck:
@@ -25,12 +24,20 @@ class Truck:
         for package in self.contents:
             print(package)
 
-    def return_to_hub(self, distance_to_hub, time_spent, manifest):
+    def return_to_hub(self, distance_to_hub, time_spent,manifest):
+        """" manages a return trip to the hub to collect unloaded packages"""
+        #update truck location, distance traveled and time
         self.current_location = "HUB"
         self.distance_traveled += distance_to_hub
         delta = timedelta(minutes=time_spent)
         self.time = (datetime.combine(datetime.today(), self.time) + delta).time()
-        self.contents.append(manifest.lookup(6))
+        #lookup package, update package information
+        package = manifest.lookup(6)
+        package.delivery_status = "in transit"
+        package.loading_time = self.time
+        #update contents (add package 6) and update capacity
+        self.contents.append(package)
+        self.unused_capacity -= 1
 
 
     def log_delivery(self,time_delivered,distance,new_location):
