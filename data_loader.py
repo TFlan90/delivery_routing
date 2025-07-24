@@ -45,6 +45,7 @@ def load_truck(manifest, truck1 : Truck, truck2 : Truck, truck3 : Truck):
 
     Algorithm logic: sort packages into candidate lists using notes for trucks 2 and 3
     everything else goes into candidate list 1
+    package 6 is skipped and loaded after it arrives to the hub
     when a package is loaded on a truck, it's considered "in transit"
     truck2_candidates -> truck2 -> overflow goes to truck1_candidates
     everything in truck3_candidates -> truck3
@@ -56,23 +57,26 @@ def load_truck(manifest, truck1 : Truck, truck2 : Truck, truck3 : Truck):
     truck2_candidates = []
     truck3_candidates = []
 
-
+    #create candidate lists for the 3 trucks (packages that could be potentially loaded on a given truck)
     for i in range(1,41):
         package = manifest.lookup(i)
         if "Can only be on truck 2" in package.notes or "Must be delivered with" in package.notes:
             truck2_candidates.append(package)
+        #skip loading package 6, truck 1 will return to the hub sometime after it arrives at 9:05
+        elif i == 6:
+            continue
         elif "will arrive" in package.notes or "Wrong address" in package.notes:
             truck3_candidates.append(package)
         else:
             truck1_candidates.append(package)
-
+    #load truck two, overflow is added to truck 1 candidate list
     for i in range(len(truck2_candidates)):
         if truck2.unused_capacity > 0:
             truck2_candidates[i].loading_time = truck2.time
             truck2.add_package(truck2_candidates[i])
         else:
-            truck1_candidates.append(truck2_candidates[i])
-
+           truck1_candidates.append(truck2_candidates[i])
+    #load truck 3
     for i in range(len(truck3_candidates)):
         if "will arrive" not in truck3_candidates[i].notes:
             truck3_candidates[i].loading_time = truck3.time
@@ -84,6 +88,7 @@ def load_truck(manifest, truck1 : Truck, truck2 : Truck, truck3 : Truck):
             truck3_candidates[i].loading_time = datetime.time(int(truck3_candidates[i].notes[12:14]),int(truck3_candidates[i].notes[15:18]),00)
             truck3.add_package(truck3_candidates[i])
             truck3.time = max(truck3.time, truck3_candidates[i].loading_time)
+    #load truck one, overflow -> truck 2 -> truck 3
     for i in range(len(truck1_candidates)):
         truck1_candidates[i].loading_time = truck1.time
         if truck1.unused_capacity > 0:
