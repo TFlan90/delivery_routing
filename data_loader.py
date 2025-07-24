@@ -46,7 +46,7 @@ def load_truck(manifest, truck1 : Truck, truck2 : Truck, truck3 : Truck):
     Algorithm logic: sort packages into candidate lists using notes for trucks 2 and 3
     everything else goes into candidate list 1
     when a package is loaded on a truck, it's considered "in transit"
-    everything in truck2_candidates -> truck2
+    truck2_candidates -> truck2 -> overflow goes to truck1_candidates
     everything in truck3_candidates -> truck3
     truck1_candidates -> 16 packages(truck obj capacity) ->  truck1
     Overflow goes to truck 2 until it's full and the remainer goes on truck 3
@@ -67,8 +67,12 @@ def load_truck(manifest, truck1 : Truck, truck2 : Truck, truck3 : Truck):
             truck1_candidates.append(package)
 
     for i in range(len(truck2_candidates)):
-        truck2_candidates[i].loading_time = truck2.time
-        truck2.add_package(truck2_candidates[i])
+        if truck2.unused_capacity > 0:
+            truck2_candidates[i].loading_time = truck2.time
+            truck2.add_package(truck2_candidates[i])
+        else:
+            truck1_candidates.append(truck2_candidates[i])
+
     for i in range(len(truck3_candidates)):
         if "will arrive" not in truck3_candidates[i].notes:
             truck3_candidates[i].loading_time = truck3.time
