@@ -22,7 +22,7 @@ class Truck:
     def list_contents(self):
         """for testing, prints all packages on a truck"""
         for package in self.contents:
-            print(package)
+            print(package,"\n")
 
     def return_to_hub(self, distance_to_hub, time_spent,manifest):
         """" manages a return trip to the hub to collect unloaded packages"""
@@ -37,6 +37,7 @@ class Truck:
         package.loading_time = self.time
         #update contents (add package 6) and update capacity
         self.contents.append(package)
+        package.truck_number = 1
         self.unused_capacity -= 1
 
 

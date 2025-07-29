@@ -15,7 +15,7 @@ def build_delivery_manifest(filename):
         reader = csv.reader(csvfile, delimiter=',')
         for row in reader:
             package = Package(int(row[0]), row[1], row[2], int(row[4]), row[5], int(row[6]), row[7], "At the hub",
-                              "TBD", "TBD")
+                              None, "TBD", None)
             manifest.insert(package)
     return manifest
 
@@ -65,7 +65,10 @@ def load_truck(manifest, truck1 : Truck, truck2 : Truck, truck3 : Truck):
         #skip loading package 6, truck 1 will return to the hub sometime after it arrives at 9:05
         elif i == 6:
             continue
-        elif "will arrive" in package.notes or "Wrong address" in package.notes:
+        elif "will arrive" in package.notes:
+            package.delivery_status = "DELAYED"
+            truck3_candidates.append(package)
+        elif "Wrong address" in package.notes:
             truck3_candidates.append(package)
         else:
             truck1_candidates.append(package)
@@ -97,5 +100,12 @@ def load_truck(manifest, truck1 : Truck, truck2 : Truck, truck3 : Truck):
             truck2.add_package(truck1_candidates[i])
         else:
             truck3.add_package(truck1_candidates[i])
+    #update packages with truck_numbers
+    for package in truck1.contents:
+        package.truck_number = 1
+    for package in truck2.contents:
+        package.truck_number = 2
+    for package in truck3.contents:
+        package.truck_number = 3
 
     return truck1, truck2, truck3

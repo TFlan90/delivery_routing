@@ -10,7 +10,8 @@ class Package:
                  notes : str,
                  delivery_status : str,
                  loading_time : str,
-                 delivery_time : str):
+                 delivery_time : str,
+                 truck_number : int):
 
         self.package_id = package_id
         self.delivery_address = delivery_address
@@ -22,6 +23,7 @@ class Package:
         self.delivery_status = delivery_status
         self.loading_time = loading_time
         self.delivery_time = delivery_time
+        self.truck_number = truck_number
 
     def deliver_package(self,time):
         self.delivery_status = "delivered"
@@ -33,14 +35,15 @@ class Package:
                 "delivery_address: {},"
                 "delivery_city: {},"
                 "delivery_zip: {},"
-                "delivery_deadline: {},"
+                "delivery_deadline: {},\n"
                 "package_weight: {},"
                 "notes: {},"
                 "delivery_status: {},"
                 "loading_time: {},"
-                "delivery_time: {}".format(self.package_id, self.delivery_address, self.delivery_city, self.delivery_zip,
+                "delivery_time: {}"
+                "truck_number: {}\n".format(self.package_id, self.delivery_address, self.delivery_city, self.delivery_zip,
                                            self.delivery_deadline, self.package_weight, self.notes, self.delivery_status,
-                                           self.loading_time, self.delivery_time))
+                                           self.loading_time, self.delivery_time, self.truck_number))
 
 
     def __str__(self):
@@ -48,11 +51,12 @@ class Package:
                 "delivery_address: {},"
                 "delivery_city: {},"
                 "delivery_zip: {},"
-                "delivery_deadline: {},"
+                "delivery_deadline: {},\n"
                 "package_weight: {},"
                 "notes: {},"
                 "delivery_status: {},"
                 "loading_time: {},"
-                "delivery_time: {}".format(self.package_id, self.delivery_address, self.delivery_city, self.delivery_zip,
+                "delivery_time: {}"
+                "truck_number: {}\n".format(self.package_id, self.delivery_address, self.delivery_city, self.delivery_zip,
                                            self.delivery_deadline, self.package_weight, self.notes, self.delivery_status,
-                                           self.loading_time, self.delivery_time))
+                                           self.loading_time, self.delivery_time, self.truck_number))

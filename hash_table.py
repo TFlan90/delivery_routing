@@ -1,6 +1,5 @@
 
 class HashTable:
-    """simple hash table implementation"""
 
     def __init__(self, capacity=10):
         """hash table is a list of lists(buckets)"""

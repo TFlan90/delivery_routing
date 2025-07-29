@@ -31,13 +31,15 @@ def start_delivery_route(truck,adj_matrix,addr_key,manifest):
             #retrieves package number 6 after it is available at 9:05
             if truck.truck_number == 1 and package_6_retrieved == False and truck.time > datetime.time(hour=9,minute=5):
                 distance_to_hub = calculate_distance(addr_key[truck.current_location],0,adj_matrix)
+                print(f"RETURNING TO THE HUB FOR PACKAGE 6 AT: {truck.time}")
                 time_to_hub = calculate_time(distance_to_hub)
-                #address edge case
                 truck.return_to_hub(distance_to_hub, time_to_hub,manifest)
-                print("RETURNING TO HUB FOR PACKAGE 6")
                 #flag that package_6 has been picked up
                 package_6_retrieved = True
-                print(truck.list_contents())
+            #update delayed packages associated with truck 3
+            if truck.truck_number == 3 and "DELAYED" in package.delivery_status and truck.time > datetime.time(hour=9,minute=5):
+                package.delivery_status = "in transit"
+
             #only considers packages that are not delivered and have the correct address
             if package.delivery_status in ("in transit", "At the hub") and "Wrong address listed" not in package.notes:
                 #position of package address in adjacency matrix
@@ -60,10 +62,10 @@ def start_delivery_route(truck,adj_matrix,addr_key,manifest):
         truck.log_delivery(time_spent_traveling,min_distance_to_nearest_location,potential_next_delivery_location)
         #update package
         package_to_log.deliver_package(truck.time)
-        print(f"[Address of most recent delivery + truck number {truck.truck_number} new location: {truck.current_location} and current time is/delivery time was {truck.time}")
-        print(f"package number {package_to_log.package_id}, delivery deadline was {package_to_log.delivery_deadline} : delivery time was {package_to_log.delivery_time}")
-        print(f"Total miles traveled so far {truck.distance_traveled}")
 
-
-        print(packages_delivered, "]")
+        ##PRINT PACKAGES AS THEY ARE DELIVERED##
+        print(f"Package {package_to_log.package_id}: Address {package_to_log.delivery_address}, Loading Time: {package_to_log.loading_time}")
+        print(f"Current Status: {package_to_log.delivery_status}, Delivery Deadline: {package_to_log.delivery_deadline}, Delivery Time: {package_to_log.delivery_time}")
+        print(f"Delivered by Truck: {truck.truck_number}")# for a total of {packages_delivered} packages")
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         packages_delivered += 1
