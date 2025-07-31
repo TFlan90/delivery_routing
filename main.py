@@ -6,9 +6,9 @@ from delivery_route import start_delivery_route
 from reporting import *
 def main():
     #create package manifest using custom hash table
-    manifest = build_delivery_manifest("data/WGUPS Package File.csv")
+    manifest = build_delivery_manifest("data/Package File.csv")
     #create 2d array of distances between addresses and dict that exposes a package ID given an address
-    adjacency_matrix, address_key = load_distance_data("data/WGUPS Distance Table.csv")
+    adjacency_matrix, address_key = load_distance_data("data/Distance Table.csv")
     #init truck objects
     t1 = Truck(1)
     t2 = Truck(2)
@@ -16,7 +16,7 @@ def main():
     #load trucks by passing the 3 truck objects and the package manifest
     load_truck(manifest, t1, t2, t3)
    #take user input for UI
-    print("Welcome to WGUPS - We get things done quick here, because time is money, friend!")
+    print("Welcome to GetItDoneDelivery - We get things done quick here, because time is money, friend!")
     print("First, we'll ask you for a military time - the hour first, followed by the minute")
     print("We'll first share with you a record of the days completed deliveries")
     print("Next, you will see a snapshot of all the packages, and their statuses at the time you indicated!")
